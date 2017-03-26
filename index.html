@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="UTF-8">
+    <title>The Psychic Game</title>
+    <style>
+    html{
+      font-size: smaller;
+      font-weight: normal;
+    }
+    </style>
+  </head>
+  <body>
+
+    <!-- When we start playing the game, our HTML will be placed into this div. -->
+      <h1> The Psychic Game <h1>
+      <p> Guess What letter I'm thinking of? <p>
+    <div id="game">
+    <p id="wins"> Wins: </p>
+    <p id="losses">Losses: </p>
+    <p id= "guesses">Guesses: </p>
+    <p id= "chosen">Chosen: </p> 
+    </div>
+    <input type="reset" onclick="return confirm_reset();">
+
+
+    <!---start javascript -->
+    <script type="text/javascript">
+
+
+      // Our array of possible computer choices.
+      var computerChoices = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"];
+
+      // Variables for tracking our wins, losses and ties. They begin at 0.
+      var wins = 0;
+      var losses = 0;
+      var guesses = 9;
+      var chosen = [];
+      var name = prompt("Enter your name");
+
+      //INNERHTML
+      var html = function(){
+
+          document.getElementById("wins").innerHTML="Wins: " + wins;
+          document.getElementById("losses").innerHTML ="Losses: "+ losses;
+          document.getElementById("guesses").innerHTML  ="Guesses: " + guesses;
+          document.getElementById("chosen").innerHTML = "Chosen: " + chosen;
+      }
+
+      //reset button 
+      var reset = function() {
+        guesses = 9;
+        chosen = [];
+        computerGuess = computerChoices[Math.floor(Math.random() * computerChoices.length)];  
+      }
+      // Sets the computerGuess variable equal to a random choice from the computerChoice array      
+      var computerGuess = computerChoices[Math.floor(Math.random() * computerChoices.length)];     
+
+      //reset
+      function confirm_reset(reset) {
+      confirm("Are you sure you want to reset all text?");
+        location.reload(); 
+      }
+
+
+      // When the user presses a key, it will run the following function...
+      document.onkeyup = function(event) {
+
+      
+ 
+
+        // Determine which key was pressed
+      userGuess = event.key;
+      chosen.push(userGuess);
+
+        // If the user presses "r" or "p" or "s", run the game logic.
+          // This logic determines the outcome of the game (win/loss/tie), and increments the appropriate counter.
+
+          if (userGuess === computerGuess) {
+            reset();
+            alert(name + " Wins!");
+            confirm("Play Again?"); 
+            wins++;
+            guesses= 9;
+            userGuess = 0;
+            chosen = [];  
+          }
+
+          else if (userGuess != computerGuess) {
+            guesses--;
+              if (guesses == 0){
+                reset(); 
+                losses++;
+                alert(name + " you are a Loser!" + " The Answer was: " + computerGuess);
+                guesses = 9
+                userGuess = 0;
+                chosen = [];
+              }
+          }
+
+        
+
+
+          // Here we create the HTML that will be injected into our div and displayed on the page.
+          var html =
+          "wins: " + wins + "<hr>" +
+          "losses: " + losses + "<hr>" + "guesses: " + guesses + "<hr>" + "user guess: " + userGuess  + "<hr>" + "chosen: " + chosen.join(',') + "<hr>" 
+
+          // Injecting the HTML we just created into our div and updating the game information on our page.
+          document.getElementById("game").innerHTML = html;
+
+          //Appending 
+
+        };
+
+    </script>
+
+  </body>
+</html>
